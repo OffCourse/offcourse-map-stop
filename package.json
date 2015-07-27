@@ -1,6 +1,6 @@
 {
   "name": "offcourse-map-stop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A react component for the offcourse todolist item",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "^2.1.2",
-    "offcourse-map-point": "0.0.1",
+    "offcourse-map-point": "0.0.2",
     "paths-js": "^0.3.4",
     "ramda": "^0.17.1",
     "react": "^0.13.3"

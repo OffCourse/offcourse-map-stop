@@ -40,34 +40,31 @@ class Stop extends React.Component {
     });
   }
 
-  createShape(x, y, radius, scale, numberOfResources){
-    return semiRegularPolygon({
+  createShape(x, y, radius, scale, collection){
+    const shape = semiRegularPolygon({
       center: [x, y],
-      radii: R.times(() => radius * scale, numberOfResources)
+      radii: R.times(() => radius * scale, collection.length)
     });
-  }
-
-  createPoints(pointsData, strokeWidth, handlers){
-    return R.map((pointData) => this.createPoint(pointData, strokeWidth, handlers), pointsData);
+    const pointsData = R.zip(collection, shape.path.points());
+    return { shape, pointsData };
   }
 
   createPoint([item, point], strokeWidth, handlers){
-      const { id, highlight, complete } = item;
-      const [cx, cy] = point;
-      const props = { strokeWidth, id, highlight, complete, cx, cy };
-      return <Point key={ item.id } {...handlers} {...props}/>;
+    const { id, highlight, complete } = item;
+    const [cx, cy] = point;
+    const props = { strokeWidth, id, highlight, complete, cx, cy };
+    return <Point key={ item.id } {...handlers} {...props}/>;
   }
 
   render() {
     const { x, y, radius, highlight, handleHover, handleClick, collection } = this.props;
     const angle = 140;
     const scale = highlight ? 1.7 : 1;
-    const numberOfItems = collection.length;
     const strokeWidth = (radius / 10) * scale;
-    const shape = this.createShape(x, y, radius, scale, numberOfItems);
-    const pointsData = R.zip(collection, shape.path.points());
-    const points = this.createPoints(pointsData, strokeWidth, { handleHover, handleClick });
-    const dot = this.createPoint(pointsData[0], strokeWidth, { handleHover, handleClick });
+
+    const { shape, pointsData } = this.createShape(x, y, radius, scale, collection);
+    const handlers = { handleHover, handleClick };
+    const points = R.map((data) => this.createPoint(data, strokeWidth, handlers), pointsData);
 
     return (
       <g transform={ `rotate(${angle}, ${x}, ${y})` }
@@ -75,14 +72,11 @@ class Stop extends React.Component {
         onMouseEnter={ handleHover.bind(this, true) }
         onMouseLeave={ handleHover.bind(this, false ) }
         className={ this.classes() } >
-        <path
-          strokeWidth={ strokeWidth }
-          d={ shape.path.print() }/>
-       { numberOfItems > 1 ? points : dot }
+        <path strokeWidth={ strokeWidth } d={ shape.path.print() }/>
+       { points }
       </g>
     );
   }
 }
-
 
 export default Stop;

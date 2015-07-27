@@ -1,6 +1,6 @@
 require './helpers'
 
-describe "Point Map", ->
+describe "Stop Map", ->
 
   beforeAll ->
     moduleUnderTest = "../src/index.jsx"

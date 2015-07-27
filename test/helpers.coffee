@@ -29,7 +29,11 @@ mockModule = (moduleUnderTest, mockModules) ->
     'react', 
     './lib/React', 
     'classnames',
-    'ramda'
+    'ramda',
+    'paths-js/semi-regular-polygon',
+    './polygon',
+    './path',
+    './ops'
   ]
 
   container = MockComponent: React.createClass render: -> null
